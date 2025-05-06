@@ -1,0 +1,89 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #003366; /* Fondo azul oscuro principal */
+}
+
+.main-content {
+    flex-grow: 1;
+    background-color: #003366; /* Fondo azul oscuro principal */
+}
+
+.navbar-nav {
+    list-style-type: none !important; /* Forzar la eliminación */
+    padding-left: 0 !important; /* Quitar padding por defecto de ul */
+}
+
+    .navbar-nav .nav-item {
+        list-style-type: none !important; /* Alternativa para el li */
+    }
+
+/* Para asegurar el centrado vertical de los items si es necesario */
+/* (Normalmente no se requiere con la estructura correcta de Bootstrap) */
+.navbar-nav {
+    align-items: center; /* Alinea los items de flex (li) verticalmente en el centro */
+}
+
+/* Para que cada enlace ocupe toda la altura del nav-item y centre su texto */
+.nav-link {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Si el nav-item tiene una altura específica */
+}
+
+.card {
+    /* El gris claro por defecto de bg-light es #f8f9fa */
+    border: none; /* Quitar borde si no se desea */
+}
+
+.card-icon {
+    font-size: 4rem; /* Tamaño del icono en la tarjeta */
+    color: #6c757d; /* Color secundario de Bootstrap para el icono */
+}
+
+.btn-acceder {
+    background-color: #ffc107; /* Amarillo/Naranja de Bootstrap */
+    border-color: #ffc107;
+    color: #000; /* Texto oscuro para mejor contraste */
+}
+
+    .btn-acceder:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+        color: #000;
+    }
+
+.user-icon {
+    font-size: 2rem; /* Tamaño icono usuario */
+    color: #e9ecef; /* Color azul oscuro  #e9ecef*/
+    padding: 2px;
+    background-color: #003366; /* Fondo como el navbar para que el borde destaque */
+    display: inline-block;
+    line-height: 1; /* Ajustar línea para centrar icono */
+    vertical-align: middle;
+}
+
+.btn-salir {
+    background-color: #dc3545; /* Rojo "danger" de Bootstrap */
+    border-color: #dc3545;
+    color: #fff;
+}
+
+    .btn-salir:hover {
+        background-color: #bb2d3b; /* Rojo "danger" de Bootstrap más oscuro para hover */
+        border-color: #b02a37;
+        color: #fff;
+    }
+
+.btn-menu {
+    background-color: #6c757d; /* Gris secundario */
+    border-color: #6c757d;
+    color: #fff;
+}
+
+    .btn-menu:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        color: #fff;
+    }

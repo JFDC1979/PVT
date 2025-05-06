@@ -1,41 +1,189 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PVTv1</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PVTv1.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Visualización de Tableros</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Llamo a la hoja de estilos -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PVTv1</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+    <!-- Header y la vavbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #003366;">
+        <!-- Color azul oscuro similar al de tu imagen -->
+        <div class="container-fluid">
+            <!-- Opcional: Botón toggler para móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavCentered" aria-controls="navbarNavCentered" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Contenedor de los elementos de navegación -->
+            <!-- justify-content-center centrará los items horizontalmente -->
+            <div class="collapse navbar-collapse justify-content-right" id="navbarNavCentered">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tableros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Grupos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Permisos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+   
+
+            <!-- Right: User Info & Logout -->
+            <div class="d-flex align-items-center">
+                <span class="navbar-text fw-bold me-2 d-none d-sm-inline" style=" color: white"> JDC </span>
+                <div class="user-icon me-3">
+                    <i class="fas fa-user"></i>
+                </div>
+                @* Asegúrate que el botón Salir llame a la acción de Logout correspondiente *@
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="d-inline">
+                    <button type="submit" class="btn btn-salir" style="background-color: #dc3545; color: white;">Salir</button>
+                </form>
+                @* O si usas un enlace simple:
+                   <a href="@Url.Action("Logout", "Account")" class="btn btn-salir" style="background-color: #343a40; color: white;">Salir</a>
+                *@
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content container-fluid py-4 py-md-5">
+        <div class="row justify-content-center">
+            @RenderBody()
+
+            <!-- Tarjeta Grupo Tablero 1 -->
+            <div class="col-sm-10 col-md-6 col-lg-4 mb-4">
+                <div class="card bg-light h-100 rounded-3 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-4 text-center">
+                                <!-- Icono (ej: gráfico en pantalla) -->
+                                <i class="fas fa-chart-bar card-icon"></i>
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title fw-bold">Grupo Tablero 1</h5>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <!-- Empuja el select y botón hacia abajo si es necesario -->
+                            <select class="form-select form-select-sm mb-3" aria-label="Seleccionar Tablero">
+                                <option selected disabled>Seleccionar Tablero...</option>
+                                <!-- Aquí irían los tableros de este grupo -->
+                                <option value="1">Tablero Ventas</option>
+                                <option value="2">Tablero Marketing</option>
+                            </select>
+                            <div class="text-center">
+                                <button class="btn btn-acceder px-4">Acceder</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <!-- Tarjeta Grupo Tablero 2 -->
+            <div class="col-sm-10 col-md-6 col-lg-4 mb-4">
+                <div class="card bg-light h-100 rounded-3 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-4 text-center">
+                                <i class="fas fa-chart-line card-icon"></i> <!-- Icono diferente para variar -->
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title fw-bold">Grupo Tablero 2</h5>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <select class="form-select form-select-sm mb-3" aria-label="Seleccionar Tablero">
+                                <option selected disabled>Seleccionar Tablero...</option>
+                                <option value="3">Tablero Finanzas</option>
+                            </select>
+                            <div class="text-center">
+                                <button class="btn btn-acceder px-4">Acceder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Grupo Tablero 3 -->
+            <div class="col-sm-10 col-md-6 col-lg-4 mb-4">
+                <div class="card bg-light h-100 rounded-3 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-4 text-center">
+                                <i class="fas fa-chart-pie card-icon"></i> <!-- Icono diferente para variar -->
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title fw-bold">Grupo Tablero 3</h5>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <select class="form-select form-select-sm mb-3" aria-label="Seleccionar Tablero">
+                                <option selected disabled>Seleccionar Tablero...</option>
+                                <!-- Sin tableros o cargar dinámicamente -->
+                            </select>
+                            <div class="text-center">
+                                <button class="btn btn-acceder px-4">Acceder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Grupo Tablero 4 -->
+            <div class="col-sm-10 col-md-6 col-lg-4 mb-4">
+                <div class="card bg-light h-100 rounded-3 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-4 text-center">
+                                <i class="fas fa-chart-bar card-icon"></i>
+                            </div>
+                            <div class="col-8">
+                                <h5 class="card-title fw-bold">Grupo Tablero 4</h5>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <select class="form-select form-select-sm mb-3" aria-label="Seleccionar Tablero">
+                                <option selected disabled>Seleccionar Tablero...</option>
+                                <option value="4">Tablero RRHH</option>
+                                <option value="5">Tablero Operaciones</option>
+                            </select>
+                            <div class="text-center">
+                                <button class="btn btn-acceder px-4">Acceder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Agrego un footer -->
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - PVTv1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -45,5 +193,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
