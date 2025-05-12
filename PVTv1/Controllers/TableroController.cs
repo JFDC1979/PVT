@@ -41,6 +41,7 @@ public class TableroController : Controller
                 FechaModificacion = new DateTime(2023, 10, 28)
             }
         };
+    private static int _nextId = _tableros.Any() ? _tableros.Max(t => t.Id) + 1 : 1;
 
     private static List<GrupoViewModel> _grupos = new List<GrupoViewModel>
         {
@@ -52,8 +53,14 @@ public class TableroController : Controller
 
     private static int _nextGrupoId = _grupos.Any() ? _grupos.Max(g => g.IdGrupo) + 1 : 1;
 
-    private static int _nextId = _tableros.Any() ? _tableros.Max(t => t.Id) + 1 : 1;
- 
+    private static List<UsuarioViewModel> _usuarios = new List<UsuarioViewModel>
+        {
+            new UsuarioViewModel { Id = 1, NombreApellido = "Jorge del Campo", Sigla = "JDC" },
+            new UsuarioViewModel { Id = 2, NombreApellido = "Maria Elena Garcia", Sigla = "MEG" },
+                    new UsuarioViewModel { Id = 3, NombreApellido = "El pepe", Sigla = "PEPE" },
+            new UsuarioViewModel { Id = 4, NombreApellido = "QA - usuaio", Sigla = "TEST" }
+        };
+    private static int _nextUsuarioId = _usuarios.Any() ? _usuarios.Max(u => u.Id) + 1 : 1;
     public IActionResult Index_ORG(string searchTerm)
     {
         IEnumerable<TableroViewModel> tablerosFiltrados;
@@ -219,13 +226,7 @@ public class TableroController : Controller
         TempData["SuccessMessage"] = "Tablero eliminado exitosamente.";
         return RedirectToAction(nameof(Index));
     }
-
-
-    private bool TableroExists(int id)
-    {
-        return _tableros.Any(e => e.Id == id);
-    }
-
+      
     public IActionResult Grupos()
     {
        
@@ -298,6 +299,80 @@ public class TableroController : Controller
         }
         return RedirectToAction(nameof(Grupos));
     }
+
+    public IActionResult Usuarios()
+    {
+        var usuariosOrdenados = _usuarios.OrderBy(u => u.NombreApellido).ToList();
+        return View(usuariosOrdenados); 
+    }
+
+
+    public IActionResult CreateUsuario()
+    {
+        return View(new UsuarioViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateUsuario(UsuarioViewModel usuario)
+    {
+        if (ModelState.IsValid)
+        {
+            usuario.Id = _nextUsuarioId++;
+            _usuarios.Add(usuario);
+            TempData["SuccessMessage"] = "Usuario creado exitosamente.";
+            return RedirectToAction(nameof(Usuarios));
+        }
+        
+        return View(usuario);
+    }
+
+    public IActionResult EditUsuario(int? id)
+    {
+        if (id == null) return NotFound();
+        var usuario = _usuarios.FirstOrDefault(u => u.Id == id);
+        if (usuario == null) return NotFound();
+        return View(usuario);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditUsuario(int id, UsuarioViewModel usuario)
+    {
+        if (id != usuario.Id) return NotFound();
+
+        if (ModelState.IsValid)
+        {
+            var existingUsuario = _usuarios.FirstOrDefault(u => u.Id == id);
+            if (existingUsuario == null) return NotFound();
+
+            existingUsuario.NombreApellido = usuario.NombreApellido;
+            existingUsuario.Sigla = usuario.Sigla;
+            TempData["SuccessMessage"] = "Usuario actualizado exitosamente.";
+            return RedirectToAction(nameof(Usuarios));
+        }
+        
+        return View(usuario);
+    }
+
+
+    [HttpPost, ActionName("DeleteUsuario")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteUsuarioConfirmed(int id)
+    {
+        var usuario = _usuarios.FirstOrDefault(u => u.Id == id);
+        if (usuario != null)
+        {
+            _usuarios.Remove(usuario);
+            TempData["SuccessMessage"] = "Usuario eliminado exitosamente.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Usuario no encontrado.";
+        }
+        return RedirectToAction(nameof(Usuarios));
+    }
+
 
 }
 
