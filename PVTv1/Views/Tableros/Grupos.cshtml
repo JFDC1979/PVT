@@ -1,0 +1,113 @@
+﻿@model IEnumerable<PVTv1.Models.GrupoViewModel> 
+
+@{
+    ViewData["Title"] = "Gestión de Grupos";
+    
+    var tempGrupoItem = new PVTv1.Models.GrupoViewModel();
+}
+
+@section Styles {
+    <style>
+        body { background-color: #0d2033; color: #f8f9fa; }
+        .navbar-custom { background-color: #003366; }
+        .table-dark-custom { --bs-table-bg: #1a2b3c; --bs-table-striped-bg: #20354d; --bs-table-hover-bg: #253f5a; --bs-table-border-color: #304a69; color: #f8f9fa; }
+        .table-dark-custom th { background-color: #152230; }
+        .breadcrumb-item a { color: #adb5bd; text-decoration: none; }
+        .breadcrumb-item.active { color: #dee2e6; }
+        .btn-action-ver { background-color: #0d6efd; border-color: #0d6efd; color: white; } /* Opcional si no hay vista 'Details' */
+        .btn-action-editar { background-color: #ffc107; border-color: #ffc107; color: #000; }
+        .btn-action-eliminar { background-color: #dc3545; border-color: #dc3545; color: white; }
+        .card { background-color: #152230; border: 1px solid #304a69; }
+        .form-control-dark { background-color: #1a2b3c; border: 1px solid #304a69; color: #f8f9fa; }
+        .form-control-dark::placeholder { color: #adb5bd; }
+        .form-control-dark:focus { background-color: #20354d; border-color: #40689a; color: #f8f9fa; box-shadow: none; }
+        .btn-secondary-custom { background-color: #495057; border-color: #495057; }
+        .btn-primary-custom { background-color: #0056b3; border-color: #0056b3; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+}
+
+<div class="container-fluid mt-4">
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Tablero" asp-action="Index">Tableros</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Grupos</li>
+        </ol>
+    </nav>
+
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
+
+    <!-- Botón Agregar Grupo -->
+    <div class="row mb-3">
+        <div class="col-12 text-end">
+         
+            <a asp-controller="Tablero" asp-action="CreateGrupo" class="btn btn-primary-custom">
+                <i class="fas fa-plus"></i> Agregar Grupo
+            </a>
+        </div>
+    </div>
+
+
+     @if (TempData["SuccessMessage"] != null)
+     {
+         <div class="alert alert-success alert-dismissible fade show" role="alert">
+             @TempData["SuccessMessage"]
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+     }
+     @if (TempData["ErrorMessage"] != null)
+     {
+         <div class="alert alert-danger alert-dismissible fade show" role="alert">
+             @TempData["ErrorMessage"]
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+     }
+
+    <!-- Tabla de Grupos -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-dark-custom table-striped table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 15%;">@Html.DisplayNameFor(x => tempGrupoItem.IdGrupo)</th>
+                        <th scope="col">@Html.DisplayNameFor(x => tempGrupoItem.Descripcion)</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model) 
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.IdGrupo)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                <td class="text-center">
+                                  
+                                    <a asp-controller="Tablero" asp-action="EditGrupo" asp-route-id="@item.IdGrupo" class="btn btn-sm btn-action-editar me-1" title="Editar"><i class="fas fa-edit"></i> Editar</a>
+
+                                        <form asp-controller="Tablero" asp-action="DeleteGrupo" asp-route-id="@item.IdGrupo" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este grupo? La eliminación podría afectar a los tableros asociados.');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-action-eliminar" title="Eliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">No hay grupos para mostrar.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Puedes añadir scripts específicos aquí si es necesario *@
+}

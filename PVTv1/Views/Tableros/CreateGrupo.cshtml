@@ -1,0 +1,133 @@
+﻿@model PVTv1.Models.TableroViewModel
+
+@{
+    ViewData["Title"] = "Crear Nuevo Tablero";
+}
+
+@section Styles {
+    <style>
+        /* (Tus estilos para el tema oscuro del formulario) */
+        body {
+            background-color: #0d2033;
+            color: #f8f9fa;
+        }
+
+        .form-control-dark, .form-select-dark {
+            background-color: #1a2b3c;
+            border: 1px solid #304a69;
+            color: #f8f9fa;
+        }
+
+            .form-control-dark::placeholder {
+                color: #adb5bd;
+            }
+
+            .form-control-dark:focus, .form-select-dark:focus {
+                background-color: #20354d;
+                border-color: #40689a;
+                color: #f8f9fa;
+                box-shadow: none;
+            }
+
+        .form-label-dark {
+            color: #f8f9fa;
+        }
+
+        .btn-primary-custom {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-secondary-custom {
+            background-color: #495057;
+            border-color: #495057;
+        }
+
+        .card-form {
+            background-color: #152230;
+            border: 1px solid #304a69;
+        }
+
+        .breadcrumb-item a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #dee2e6;
+        }
+
+        .validation-summary-errors ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .validation-summary-errors li {
+            color: #dc3545;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Tablero" asp-action="Index">Tableros</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Crear</li>
+        </ol>
+    </nav>
+
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card card-form p-4">
+                <form asp-action="Create">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NombreTablero" class="form-label form-label-dark"></label>
+                        <input asp-for="NombreTablero" class="form-control form-control-dark" />
+                        <span asp-validation-for="NombreTablero" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Descripcion" class="form-label form-label-dark"></label>
+                        <textarea asp-for="Descripcion" class="form-control form-control-dark" rows="3"></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="URL" class="form-label form-label-dark"></label>
+                        <input asp-for="URL" class="form-control form-control-dark" />
+                        <span asp-validation-for="URL" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Grupo" class="form-label form-label-dark"></label>
+                        <input asp-for="Grupo" class="form-control form-control-dark" />
+                        <span asp-validation-for="Grupo" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Orden" class="form-label form-label-dark"></label>
+                        <input asp-for="Orden" type="number" class="form-control form-control-dark" />
+                        <span asp-validation-for="Orden" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FechaModificacion" class="form-label form-label-dark"></label>
+                        <input asp-for="FechaModificacion" class="form-control form-control-dark" type="date" /> @* type="date" para el selector de fecha *@
+                        <span asp-validation-for="FechaModificacion" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-end">
+                        <a asp-action="Index" class="btn btn-secondary-custom me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary-custom">Crear Tablero</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace PVTv1.Models
 {
     public class ErrorViewModel
